@@ -1,12 +1,24 @@
-from django.shortcuts import render, get_object_or_404
+
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Course, Question, Choice, Submission
 
 
 def course_details(request, course_id):
     course = get_object_or_404(Course, id=course_id)
+
     return render(
         request,
         'onlinecourseapp/course_details_bootstrap.html',
+        {'course': course}
+    )
+
+
+def exam(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+
+    return render(
+        request,
+        'onlinecourseapp/exam.html',
         {'course': course}
     )
 
@@ -17,6 +29,12 @@ def submit(request, course_id):
     if request.method == 'POST':
         score = 0
         total_grade = 0
+        last_submission = None
+
+        # Remove previous submissions for this course
+        Submission.objects.filter(
+            question__course=course
+        ).delete()
 
         for question in Question.objects.filter(course=course):
             total_grade += question.grade
@@ -32,13 +50,20 @@ def submit(request, course_id):
                     question=question
                 )
 
-                Submission.objects.create(
+                last_submission = Submission.objects.create(
                     question=question,
                     choice=choice
                 )
 
                 if choice.is_correct:
                     score += question.grade
+
+        if last_submission:
+            return redirect(
+                'onlinecourseapp:show_exam_result',
+                course_id=course.id,
+                submission_id=last_submission.id
+            )
 
         return render(
             request,
@@ -57,8 +82,18 @@ def submit(request, course_id):
     )
 
 
-def show_exam_result(request, course_id):
-    course = get_object_or_404(Course, id=course_id)
+def show_exam_result(request, course_id, submission_id):
+    course = get_object_or_404(
+        Course,
+        id=course_id
+    )
+
+    # Verify that the submission exists and belongs to this course
+    get_object_or_404(
+        Submission,
+        id=submission_id,
+        question__course=course
+    )
 
     submissions = Submission.objects.filter(
         question__course=course
@@ -67,7 +102,9 @@ def show_exam_result(request, course_id):
     score = 0
     total_grade = 0
 
-    questions = Question.objects.filter(course=course)
+    questions = Question.objects.filter(
+        course=course
+    )
 
     for question in questions:
         total_grade += question.grade
@@ -87,13 +124,4 @@ def show_exam_result(request, course_id):
             'score': score,
             'total_grade': total_grade,
         }
-    )
-
-def exam(request, course_id):
-    course = get_object_or_404(Course, id=course_id)
-
-    return render(
-        request,
-        'onlinecourseapp/exam.html',
-        {'course': course}
     )
