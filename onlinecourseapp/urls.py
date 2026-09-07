@@ -1,5 +1,3 @@
-
-
 from django.urls import path
 from . import views
 
@@ -18,30 +16,15 @@ urlpatterns = [
         name='exam'
     ),
 
-    # Required submit path
     path(
         '<int:course_id>/submit/',
         views.submit,
         name='submit'
     ),
 
-    # Required exam result path
     path(
         '<int:course_id>/exam_result/<int:submission_id>/',
         views.show_exam_result,
         name='show_exam_result'
-    ),
-
-    # Existing route kept for the exam form
-    path(
-        'course/<int:course_id>/submit/',
-        views.submit,
-        name='course_submit'
-    ),
-
-    path(
-        'course/<int:course_id>/exam_result/<int:submission_id>/',
-        views.show_exam_result,
-        name='course_exam_result'
     ),
 ]
