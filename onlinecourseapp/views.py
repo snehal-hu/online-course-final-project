@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Course, Question, Choice, Submission
 
@@ -60,7 +59,7 @@ def submit(request, course_id):
 
         if last_submission:
             return redirect(
-                'onlinecourseapp:show_exam_result',
+                'onlinecourseapp:exam_result',
                 course_id=course.id,
                 submission_id=last_submission.id
             )
@@ -88,7 +87,7 @@ def show_exam_result(request, course_id, submission_id):
         id=course_id
     )
 
-    # Verify that the submission exists and belongs to this course
+    # Verify that the submission belongs to this course
     get_object_or_404(
         Submission,
         id=submission_id,
@@ -123,5 +122,6 @@ def show_exam_result(request, course_id, submission_id):
             'course': course,
             'score': score,
             'total_grade': total_grade,
+            'submissions': submissions,
         }
     )

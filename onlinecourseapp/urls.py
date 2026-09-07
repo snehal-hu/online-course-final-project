@@ -17,14 +17,14 @@ urlpatterns = [
     ),
 
     path(
-        '<int:course_id>/submit/',
+        'course/<int:course_id>/submit/',
         views.submit,
         name='submit'
     ),
 
     path(
-        '<int:course_id>/exam_result/<int:submission_id>/',
+        'course/<int:course_id>/exam_result/<int:submission_id>/',
         views.show_exam_result,
-        name='show_exam_result'
+        name='exam_result'
     ),
 ]
