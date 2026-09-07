@@ -25,6 +25,6 @@ urlpatterns = [
     path(
         'course/<int:course_id>/exam_result/<int:submission_id>/',
         views.show_exam_result,
-        name='exam_result'
+        name='show_exam_result'
     ),
 ]
