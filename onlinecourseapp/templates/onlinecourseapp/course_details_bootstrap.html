@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>{{ course.name }}</title>
 
@@ -16,25 +16,27 @@
 
     <h1 class="mb-4">{{ course.name }}</h1>
 
-    <p class="lead">
-        {{ course.description }}
-    </p>
+    <div class="card mb-4">
+        <div class="card-body">
+            <p class="card-text">{{ course.description }}</p>
+        </div>
+    </div>
 
-    <h2 class="mt-4">Lessons</h2>
+    <h2 class="mb-3">Lessons</h2>
 
     <div class="list-group">
 
         {% for lesson in course.lesson_set.all %}
 
         <div class="list-group-item">
-            <h5 class="mb-1">{{ lesson.title }}</h5>
-            <p class="mb-1">{{ lesson.content }}</p>
+            <h5>{{ lesson.title }}</h5>
+            <p>{{ lesson.content }}</p>
         </div>
 
         {% empty %}
 
         <div class="alert alert-info">
-            No lessons available for this course.
+            No lessons available.
         </div>
 
         {% endfor %}
