@@ -1,4 +1,3 @@
-```python
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Course, Question, Choice, Submission
 
@@ -129,4 +128,3 @@ def show_exam_result(request, course_id, submission_id):
             'submissions': submissions,
         }
     )
-```

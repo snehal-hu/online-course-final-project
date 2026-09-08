@@ -1,4 +1,3 @@
-```python
 from django.contrib import admin
 from .models import (
     Instructor,
@@ -42,4 +41,3 @@ admin.site.register(Question, QuestionAdmin)
 admin.site.register(Choice)
 admin.site.register(Submission)
 admin.site.register(Enrollment)
-```

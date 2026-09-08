@@ -1,4 +1,3 @@
-```python
 from django.urls import path
 from . import views
 
@@ -29,4 +28,3 @@ urlpatterns = [
         name='show_exam_result'
     ),
 ]
-```
