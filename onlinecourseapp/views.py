@@ -56,13 +56,12 @@ def submit(request, course_id):
 
                 if choice.is_correct:
                     score += question.grade
-
-        if last_submission:
-            return redirect(
-                'onlinecourseapp:exam_result',
-                course_id=course.id,
-                submission_id=last_submission.id
-            )
+                    if last_submission:
+                        return redirect(
+    'onlinecourseapp:show_exam_result',
+        course_id=course.id,
+        submission_id=last_submission.id
+    )
 
         return render(
             request,
