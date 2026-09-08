@@ -1,3 +1,4 @@
+```python
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Course, Question, Choice, Submission
 
@@ -35,6 +36,7 @@ def submit(request, course_id):
             question__course=course
         ).delete()
 
+        # Process each question
         for question in Question.objects.filter(course=course):
             total_grade += question.grade
 
@@ -56,12 +58,14 @@ def submit(request, course_id):
 
                 if choice.is_correct:
                     score += question.grade
-                    if last_submission:
-                        return redirect(
-    'onlinecourseapp:show_exam_result',
-        course_id=course.id,
-        submission_id=last_submission.id
-    )
+
+        # Redirect only after ALL questions have been processed
+        if last_submission:
+            return redirect(
+                'onlinecourseapp:show_exam_result',
+                course_id=course.id,
+                submission_id=last_submission.id
+            )
 
         return render(
             request,
@@ -70,6 +74,7 @@ def submit(request, course_id):
                 'course': course,
                 'score': score,
                 'total_grade': total_grade,
+                'submissions': Submission.objects.none(),
             }
         )
 
@@ -124,3 +129,4 @@ def show_exam_result(request, course_id, submission_id):
             'submissions': submissions,
         }
     )
+```
